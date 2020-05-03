@@ -1,0 +1,29 @@
+mutation {
+  adminUser: createUser(
+    data: {
+      firstName: "Admin"
+      email: "admin@mohona.net"
+      password: "$2a$10$GTEwkPxldUTgi1Nb1XUfJ.aRFoOx4Qbj4OZvj55GtbifzoulwaPIK"
+      role: ADMIN
+    }
+  ) {
+    id
+  }
+
+  workTypeUv: createWorkType(data: { name: "UV", rate: 1.0 }) {
+    id
+  }
+  workTypeFoil: createWorkType(data: { name: "FOIL", rate: 2.0 }) {
+    id
+  }
+  workTypeEmboss: createWorkType(data: { name: "EMBOSS", rate: 3.0 }) {
+    id
+  }
+
+  clientImage: createClient(data: { name: "Image" }) {
+    id
+  }
+  clientHearts: createClient(data: { name: "Hearts" }) {
+    id
+  }
+}

@@ -1,0 +1,64 @@
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String
+  dob: String
+  email: String!
+  password: String!
+  role: Role
+  createdAt: String!
+  updatedAt: String!
+}
+
+type AuthPayload {
+  id: ID!
+  email: String!
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+# type Role {
+#   id: ID!
+#   name: String!
+# }
+
+type WorkType {
+  id: ID!
+  name: String!
+  rate: Float!
+  workOrders: [WorkOrder]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Client {
+  id: ID!
+  name: String!
+  contact: String
+  workOrders: [WorkOrder]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type WorkOrder {
+  id: ID!
+  item: String!
+  workTypes: [WorkType]!
+  worker: User
+  client: Client!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type WorkBreakdown {
+  id: ID!
+  workOrder: WorkOrder!
+  sideA: String
+  sideB: String
+  quantity: Int
+  side: Int
+  rate: Float
+}

@@ -1,0 +1,10 @@
+type Mutation {
+  signUp(signUpInput: SignUpInput): AuthPayload!
+  login(loginInput: LoginInput): AuthPayload!
+  logout: Boolean!
+}
+
+type Query {
+  users: [User!]!
+  currentUser: AuthPayload!
+}

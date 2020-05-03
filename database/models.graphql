@@ -1,0 +1,64 @@
+type User @db(name: "users") {
+  id: ID! @id
+  firstName: String!
+  lastName: String
+  dob: DateTime
+  email: String! @unique
+  password: String!
+  role: Role @default(value: USER)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+# type Role @db(name: "roles") {
+#   id: ID! @id
+#   name: String! @unique
+# }
+
+type Client @db(name: "clients") {
+  id: ID! @id
+  name: String! @unique
+  contact: String
+  workOrders: [WorkOrder]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type WorkType @db(name: "work_types") {
+  id: ID! @id
+  name: String! @unique
+  rate: Float!
+  workOrders: [WorkOrder]!
+    @relation(name: "WorkTypeToWorkOrders", onDelete: CASCADE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type WorkOrder @db(name: "work_orders") {
+  id: ID! @id
+  item: String!
+  workTypes: [WorkType]!
+    @relation(name: "WorkTypeToWorkOrders", onDelete: SET_NULL)
+  WorkBreakdowns: [WorkBreakdown]!
+    @relation(name: "WorkOrderToWorkBreakdowns", onDelete: CASCADE)
+  worker: User
+  client: Client!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type WorkBreakdown @db(name: "work_breakdown") {
+  id: ID! @id
+  workOrder: WorkOrder!
+    @relation(name: "WorkOrderToWorkBreakdowns", onDelete: SET_NULL)
+  sideA: String
+  sideB: String
+  quantity: Int
+  side: Int
+  rate: Float
+}
