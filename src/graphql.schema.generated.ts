@@ -11,6 +11,20 @@ export enum Role {
     ADMIN = "ADMIN"
 }
 
+export enum WorkBreakdownStatus {
+    PENDING = "PENDING",
+    IN_PROGRESS = "IN_PROGRESS",
+    HALF_DONE = "HALF_DONE",
+    COMPLETE = "COMPLETE"
+}
+
+export enum WorkOrderStatus {
+    PENDING = "PENDING",
+    IN_PROGRESS = "IN_PROGRESS",
+    HALF_DONE = "HALF_DONE",
+    COMPLETE = "COMPLETE"
+}
+
 export class ClientInput {
     name: string;
     contact?: string;
@@ -23,19 +37,32 @@ export class LoginInput {
 
 export class SignUpInput {
     firstName: string;
+    lastName?: string;
     email: string;
     password: string;
 }
 
-export class UserInput {
+export class UserProfileInput {
+    firstName: string;
+    lastName?: string;
+    dob?: string;
     email: string;
+}
+
+export class WorkBreakdownInput {
+    workOrderId: string;
+    sideA?: string;
+    sideB?: string;
+    quantity?: number;
+    side?: number;
+    rate?: number;
 }
 
 export class WorkOrderInput {
     item: string;
-    workTypes: WorkTypeInput[];
-    worker?: UserInput;
-    client: ClientInput;
+    workTypeIds: string[];
+    workerId?: string;
+    clientId: string;
 }
 
 export class WorkTypeInput {
@@ -63,12 +90,54 @@ export abstract class IMutation {
     abstract login(loginInput?: LoginInput): AuthPayload | Promise<AuthPayload>;
 
     abstract logout(): boolean | Promise<boolean>;
+
+    abstract createClient(input?: ClientInput): Client | Promise<Client>;
+
+    abstract updateClient(id: string, input?: ClientInput): Client | Promise<Client>;
+
+    abstract deleteClient(id: string): Client | Promise<Client>;
+
+    abstract updateUserProfile(): User | Promise<User>;
+
+    abstract createWorkBreakdown(input?: WorkBreakdownInput): WorkBreakdown | Promise<WorkBreakdown>;
+
+    abstract updateWorkBreakdown(id: string, input?: WorkBreakdownInput): WorkBreakdown | Promise<WorkBreakdown>;
+
+    abstract deleteWorkBreakdown(id: string): WorkBreakdown | Promise<WorkBreakdown>;
+
+    abstract createWorkOrder(input?: WorkOrderInput): WorkOrder | Promise<WorkOrder>;
+
+    abstract updateWorkOrder(id: string, input?: WorkOrderInput): WorkOrder | Promise<WorkOrder>;
+
+    abstract deleteWorkOrder(id: string): WorkOrder | Promise<WorkOrder>;
+
+    abstract createWorkType(input?: WorkTypeInput): WorkType | Promise<WorkType>;
+
+    abstract updateWorkType(id: string, input?: WorkTypeInput): WorkType | Promise<WorkType>;
+
+    abstract deleteWorkType(id: string): WorkType | Promise<WorkType>;
 }
 
 export abstract class IQuery {
+    abstract currentUser(): AuthPayload | Promise<AuthPayload>;
+
+    abstract getClients(): Client[] | Promise<Client[]>;
+
+    abstract getClientById(): Client | Promise<Client>;
+
     abstract users(): User[] | Promise<User[]>;
 
-    abstract currentUser(): AuthPayload | Promise<AuthPayload>;
+    abstract getWorkBreakdowns(): WorkBreakdown[] | Promise<WorkBreakdown[]>;
+
+    abstract getWorkBreakdownById(): WorkBreakdown | Promise<WorkBreakdown>;
+
+    abstract getWorkOrders(): WorkOrder[] | Promise<WorkOrder[]>;
+
+    abstract getWorkOrderById(): WorkOrder | Promise<WorkOrder>;
+
+    abstract getWorkTypes(): WorkType[] | Promise<WorkType[]>;
+
+    abstract getWorkTypeById(): WorkType | Promise<WorkType>;
 }
 
 export class User {
@@ -91,6 +160,7 @@ export class WorkBreakdown {
     quantity?: number;
     side?: number;
     rate?: number;
+    status: WorkBreakdownStatus;
 }
 
 export class WorkOrder {
@@ -99,6 +169,7 @@ export class WorkOrder {
     workTypes: WorkType[];
     worker?: User;
     client: Client;
+    status: WorkOrderStatus;
     createdAt: string;
     updatedAt: string;
 }

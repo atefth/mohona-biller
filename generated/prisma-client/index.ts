@@ -263,13 +263,27 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type WorkBreakdownStatus =
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "HALF_DONE"
+  | "COMPLETE";
+
 export type Role = "USER" | "ADMIN";
+
+export type WorkOrderStatus =
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "HALF_DONE"
+  | "COMPLETE";
 
 export type WorkOrderOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "item_ASC"
   | "item_DESC"
+  | "status_ASC"
+  | "status_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -299,7 +313,13 @@ export type WorkBreakdownOrderByInput =
   | "side_ASC"
   | "side_DESC"
   | "rate_ASC"
-  | "rate_DESC";
+  | "rate_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type ClientOrderByInput =
   | "id_ASC"
@@ -377,6 +397,10 @@ export interface WorkOrderWhereInput {
   WorkBreakdowns_none?: Maybe<WorkBreakdownWhereInput>;
   worker?: Maybe<UserWhereInput>;
   client?: Maybe<ClientWhereInput>;
+  status?: Maybe<WorkOrderStatus>;
+  status_not?: Maybe<WorkOrderStatus>;
+  status_in?: Maybe<WorkOrderStatus[] | WorkOrderStatus>;
+  status_not_in?: Maybe<WorkOrderStatus[] | WorkOrderStatus>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -527,6 +551,26 @@ export interface WorkBreakdownWhereInput {
   rate_lte?: Maybe<Float>;
   rate_gt?: Maybe<Float>;
   rate_gte?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
+  status_not?: Maybe<WorkBreakdownStatus>;
+  status_in?: Maybe<WorkBreakdownStatus[] | WorkBreakdownStatus>;
+  status_not_in?: Maybe<WorkBreakdownStatus[] | WorkBreakdownStatus>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<WorkBreakdownWhereInput[] | WorkBreakdownWhereInput>;
   OR?: Maybe<WorkBreakdownWhereInput[] | WorkBreakdownWhereInput>;
   NOT?: Maybe<WorkBreakdownWhereInput[] | WorkBreakdownWhereInput>;
@@ -741,6 +785,7 @@ export interface WorkOrderCreateWithoutClientInput {
   workTypes?: Maybe<WorkTypeCreateManyWithoutWorkOrdersInput>;
   WorkBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserCreateOneInput>;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface WorkTypeCreateManyWithoutWorkOrdersInput {
@@ -774,6 +819,7 @@ export interface WorkBreakdownCreateWithoutWorkOrderInput {
   quantity?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
 }
 
 export interface UserCreateOneInput {
@@ -830,6 +876,7 @@ export interface WorkOrderUpdateWithoutClientDataInput {
   workTypes?: Maybe<WorkTypeUpdateManyWithoutWorkOrdersInput>;
   WorkBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserUpdateOneInput>;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface WorkTypeUpdateManyWithoutWorkOrdersInput {
@@ -983,6 +1030,7 @@ export interface WorkBreakdownUpdateWithoutWorkOrderDataInput {
   quantity?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
 }
 
 export interface WorkBreakdownUpsertWithWhereUniqueWithoutWorkOrderInput {
@@ -1058,6 +1106,26 @@ export interface WorkBreakdownScalarWhereInput {
   rate_lte?: Maybe<Float>;
   rate_gt?: Maybe<Float>;
   rate_gte?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
+  status_not?: Maybe<WorkBreakdownStatus>;
+  status_in?: Maybe<WorkBreakdownStatus[] | WorkBreakdownStatus>;
+  status_not_in?: Maybe<WorkBreakdownStatus[] | WorkBreakdownStatus>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<WorkBreakdownScalarWhereInput[] | WorkBreakdownScalarWhereInput>;
   OR?: Maybe<WorkBreakdownScalarWhereInput[] | WorkBreakdownScalarWhereInput>;
   NOT?: Maybe<WorkBreakdownScalarWhereInput[] | WorkBreakdownScalarWhereInput>;
@@ -1074,6 +1142,7 @@ export interface WorkBreakdownUpdateManyDataInput {
   quantity?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
 }
 
 export interface UserUpdateOneInput {
@@ -1134,6 +1203,10 @@ export interface WorkOrderScalarWhereInput {
   item_not_starts_with?: Maybe<String>;
   item_ends_with?: Maybe<String>;
   item_not_ends_with?: Maybe<String>;
+  status?: Maybe<WorkOrderStatus>;
+  status_not?: Maybe<WorkOrderStatus>;
+  status_in?: Maybe<WorkOrderStatus[] | WorkOrderStatus>;
+  status_not_in?: Maybe<WorkOrderStatus[] | WorkOrderStatus>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1162,6 +1235,7 @@ export interface WorkOrderUpdateManyWithWhereNestedInput {
 
 export interface WorkOrderUpdateManyDataInput {
   item?: Maybe<String>;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface ClientUpdateManyMutationInput {
@@ -1195,6 +1269,7 @@ export interface WorkBreakdownCreateInput {
   quantity?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
 }
 
 export interface WorkOrderCreateOneWithoutWorkBreakdownsInput {
@@ -1208,6 +1283,7 @@ export interface WorkOrderCreateWithoutWorkBreakdownsInput {
   workTypes?: Maybe<WorkTypeCreateManyWithoutWorkOrdersInput>;
   worker?: Maybe<UserCreateOneInput>;
   client: ClientCreateOneWithoutWorkOrdersInput;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface ClientCreateOneWithoutWorkOrdersInput {
@@ -1228,6 +1304,7 @@ export interface WorkBreakdownUpdateInput {
   quantity?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
 }
 
 export interface WorkOrderUpdateOneRequiredWithoutWorkBreakdownsInput {
@@ -1242,6 +1319,7 @@ export interface WorkOrderUpdateWithoutWorkBreakdownsDataInput {
   workTypes?: Maybe<WorkTypeUpdateManyWithoutWorkOrdersInput>;
   worker?: Maybe<UserUpdateOneInput>;
   client?: Maybe<ClientUpdateOneRequiredWithoutWorkOrdersInput>;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface ClientUpdateOneRequiredWithoutWorkOrdersInput {
@@ -1272,6 +1350,7 @@ export interface WorkBreakdownUpdateManyMutationInput {
   quantity?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
+  status?: Maybe<WorkBreakdownStatus>;
 }
 
 export interface WorkOrderCreateInput {
@@ -1281,6 +1360,7 @@ export interface WorkOrderCreateInput {
   WorkBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserCreateOneInput>;
   client: ClientCreateOneWithoutWorkOrdersInput;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface WorkOrderUpdateInput {
@@ -1289,10 +1369,12 @@ export interface WorkOrderUpdateInput {
   WorkBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserUpdateOneInput>;
   client?: Maybe<ClientUpdateOneRequiredWithoutWorkOrdersInput>;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface WorkOrderUpdateManyMutationInput {
   item?: Maybe<String>;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface WorkTypeCreateInput {
@@ -1316,6 +1398,7 @@ export interface WorkOrderCreateWithoutWorkTypesInput {
   WorkBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserCreateOneInput>;
   client: ClientCreateOneWithoutWorkOrdersInput;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface WorkTypeUpdateInput {
@@ -1358,6 +1441,7 @@ export interface WorkOrderUpdateWithoutWorkTypesDataInput {
   WorkBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserUpdateOneInput>;
   client?: Maybe<ClientUpdateOneRequiredWithoutWorkOrdersInput>;
+  status?: Maybe<WorkOrderStatus>;
 }
 
 export interface WorkOrderUpsertWithWhereUniqueWithoutWorkTypesInput {
@@ -1512,6 +1596,7 @@ export interface ClientNullablePromise
 export interface WorkOrder {
   id: ID_Output;
   item: String;
+  status: WorkOrderStatus;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -1539,6 +1624,7 @@ export interface WorkOrderPromise extends Promise<WorkOrder>, Fragmentable {
   }) => T;
   worker: <T = UserPromise>() => T;
   client: <T = ClientPromise>() => T;
+  status: () => Promise<WorkOrderStatus>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -1570,6 +1656,7 @@ export interface WorkOrderSubscription
   }) => T;
   worker: <T = UserSubscription>() => T;
   client: <T = ClientSubscription>() => T;
+  status: () => Promise<AsyncIterator<WorkOrderStatus>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -1599,6 +1686,7 @@ export interface WorkOrderNullablePromise
   }) => T;
   worker: <T = UserPromise>() => T;
   client: <T = ClientPromise>() => T;
+  status: () => Promise<WorkOrderStatus>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -1673,6 +1761,9 @@ export interface WorkBreakdown {
   quantity?: Int;
   side?: Int;
   rate?: Float;
+  status: WorkBreakdownStatus;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface WorkBreakdownPromise
@@ -1685,6 +1776,9 @@ export interface WorkBreakdownPromise
   quantity: () => Promise<Int>;
   side: () => Promise<Int>;
   rate: () => Promise<Float>;
+  status: () => Promise<WorkBreakdownStatus>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface WorkBreakdownSubscription
@@ -1697,6 +1791,9 @@ export interface WorkBreakdownSubscription
   quantity: () => Promise<AsyncIterator<Int>>;
   side: () => Promise<AsyncIterator<Int>>;
   rate: () => Promise<AsyncIterator<Float>>;
+  status: () => Promise<AsyncIterator<WorkBreakdownStatus>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface WorkBreakdownNullablePromise
@@ -1709,6 +1806,9 @@ export interface WorkBreakdownNullablePromise
   quantity: () => Promise<Int>;
   side: () => Promise<Int>;
   rate: () => Promise<Float>;
+  status: () => Promise<WorkBreakdownStatus>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface User {
@@ -2228,6 +2328,9 @@ export interface WorkBreakdownPreviousValues {
   quantity?: Int;
   side?: Int;
   rate?: Float;
+  status: WorkBreakdownStatus;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface WorkBreakdownPreviousValuesPromise
@@ -2239,6 +2342,9 @@ export interface WorkBreakdownPreviousValuesPromise
   quantity: () => Promise<Int>;
   side: () => Promise<Int>;
   rate: () => Promise<Float>;
+  status: () => Promise<WorkBreakdownStatus>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface WorkBreakdownPreviousValuesSubscription
@@ -2250,6 +2356,9 @@ export interface WorkBreakdownPreviousValuesSubscription
   quantity: () => Promise<AsyncIterator<Int>>;
   side: () => Promise<AsyncIterator<Int>>;
   rate: () => Promise<AsyncIterator<Float>>;
+  status: () => Promise<AsyncIterator<WorkBreakdownStatus>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface WorkOrderSubscriptionPayload {
@@ -2280,6 +2389,7 @@ export interface WorkOrderSubscriptionPayloadSubscription
 export interface WorkOrderPreviousValues {
   id: ID_Output;
   item: String;
+  status: WorkOrderStatus;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2289,6 +2399,7 @@ export interface WorkOrderPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   item: () => Promise<String>;
+  status: () => Promise<WorkOrderStatus>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2298,6 +2409,7 @@ export interface WorkOrderPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   item: () => Promise<AsyncIterator<String>>;
+  status: () => Promise<AsyncIterator<WorkOrderStatus>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -2419,7 +2531,15 @@ export const models: Model[] = [
     embedded: false
   },
   {
+    name: "WorkOrderStatus",
+    embedded: false
+  },
+  {
     name: "WorkBreakdown",
+    embedded: false
+  },
+  {
+    name: "WorkBreakdownStatus",
     embedded: false
   }
 ];

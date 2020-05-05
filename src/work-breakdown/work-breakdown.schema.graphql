@@ -1,0 +1,37 @@
+type WorkBreakdown {
+  id: ID!
+  workOrder: WorkOrder!
+  sideA: String
+  sideB: String
+  quantity: Int
+  side: Int
+  rate: Float
+  status: WorkBreakdownStatus!
+}
+
+enum WorkBreakdownStatus {
+  PENDING
+  IN_PROGRESS
+  HALF_DONE
+  COMPLETE
+}
+
+input WorkBreakdownInput {
+  workOrderId: ID!
+  sideA: String
+  sideB: String
+  quantity: Int
+  side: Int
+  rate: Float
+}
+
+type Query {
+  getWorkBreakdowns: [WorkBreakdown!]!
+  getWorkBreakdownById: WorkBreakdown
+}
+
+type Mutation {
+  createWorkBreakdown(input: WorkBreakdownInput): WorkBreakdown!
+  updateWorkBreakdown(id: ID!, input: WorkBreakdownInput): WorkBreakdown!
+  deleteWorkBreakdown(id: ID!): WorkBreakdown!
+}

@@ -536,6 +536,9 @@ type WorkBreakdown {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type WorkBreakdownConnection {
@@ -552,6 +555,7 @@ input WorkBreakdownCreateInput {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus
 }
 
 input WorkBreakdownCreateManyWithoutWorkOrderInput {
@@ -566,6 +570,7 @@ input WorkBreakdownCreateWithoutWorkOrderInput {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus
 }
 
 type WorkBreakdownEdge {
@@ -586,6 +591,12 @@ enum WorkBreakdownOrderByInput {
   side_DESC
   rate_ASC
   rate_DESC
+  status_ASC
+  status_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type WorkBreakdownPreviousValues {
@@ -595,6 +606,9 @@ type WorkBreakdownPreviousValues {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input WorkBreakdownScalarWhereInput {
@@ -664,9 +678,36 @@ input WorkBreakdownScalarWhereInput {
   rate_lte: Float
   rate_gt: Float
   rate_gte: Float
+  status: WorkBreakdownStatus
+  status_not: WorkBreakdownStatus
+  status_in: [WorkBreakdownStatus!]
+  status_not_in: [WorkBreakdownStatus!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [WorkBreakdownScalarWhereInput!]
   OR: [WorkBreakdownScalarWhereInput!]
   NOT: [WorkBreakdownScalarWhereInput!]
+}
+
+enum WorkBreakdownStatus {
+  PENDING
+  IN_PROGRESS
+  HALF_DONE
+  COMPLETE
 }
 
 type WorkBreakdownSubscriptionPayload {
@@ -694,6 +735,7 @@ input WorkBreakdownUpdateInput {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus
 }
 
 input WorkBreakdownUpdateManyDataInput {
@@ -702,6 +744,7 @@ input WorkBreakdownUpdateManyDataInput {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus
 }
 
 input WorkBreakdownUpdateManyMutationInput {
@@ -710,6 +753,7 @@ input WorkBreakdownUpdateManyMutationInput {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus
 }
 
 input WorkBreakdownUpdateManyWithoutWorkOrderInput {
@@ -735,6 +779,7 @@ input WorkBreakdownUpdateWithoutWorkOrderDataInput {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus
 }
 
 input WorkBreakdownUpdateWithWhereUniqueWithoutWorkOrderInput {
@@ -816,6 +861,26 @@ input WorkBreakdownWhereInput {
   rate_lte: Float
   rate_gt: Float
   rate_gte: Float
+  status: WorkBreakdownStatus
+  status_not: WorkBreakdownStatus
+  status_in: [WorkBreakdownStatus!]
+  status_not_in: [WorkBreakdownStatus!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [WorkBreakdownWhereInput!]
   OR: [WorkBreakdownWhereInput!]
   NOT: [WorkBreakdownWhereInput!]
@@ -832,6 +897,7 @@ type WorkOrder {
   WorkBreakdowns(where: WorkBreakdownWhereInput, orderBy: WorkBreakdownOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkBreakdown!]
   worker: User
   client: Client!
+  status: WorkOrderStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -849,6 +915,7 @@ input WorkOrderCreateInput {
   WorkBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
   worker: UserCreateOneInput
   client: ClientCreateOneWithoutWorkOrdersInput!
+  status: WorkOrderStatus
 }
 
 input WorkOrderCreateManyWithoutClientInput {
@@ -872,6 +939,7 @@ input WorkOrderCreateWithoutClientInput {
   workTypes: WorkTypeCreateManyWithoutWorkOrdersInput
   WorkBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
   worker: UserCreateOneInput
+  status: WorkOrderStatus
 }
 
 input WorkOrderCreateWithoutWorkBreakdownsInput {
@@ -880,6 +948,7 @@ input WorkOrderCreateWithoutWorkBreakdownsInput {
   workTypes: WorkTypeCreateManyWithoutWorkOrdersInput
   worker: UserCreateOneInput
   client: ClientCreateOneWithoutWorkOrdersInput!
+  status: WorkOrderStatus
 }
 
 input WorkOrderCreateWithoutWorkTypesInput {
@@ -888,6 +957,7 @@ input WorkOrderCreateWithoutWorkTypesInput {
   WorkBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
   worker: UserCreateOneInput
   client: ClientCreateOneWithoutWorkOrdersInput!
+  status: WorkOrderStatus
 }
 
 type WorkOrderEdge {
@@ -900,6 +970,8 @@ enum WorkOrderOrderByInput {
   id_DESC
   item_ASC
   item_DESC
+  status_ASC
+  status_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -909,6 +981,7 @@ enum WorkOrderOrderByInput {
 type WorkOrderPreviousValues {
   id: ID!
   item: String!
+  status: WorkOrderStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -942,6 +1015,10 @@ input WorkOrderScalarWhereInput {
   item_not_starts_with: String
   item_ends_with: String
   item_not_ends_with: String
+  status: WorkOrderStatus
+  status_not: WorkOrderStatus
+  status_in: [WorkOrderStatus!]
+  status_not_in: [WorkOrderStatus!]
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -961,6 +1038,13 @@ input WorkOrderScalarWhereInput {
   AND: [WorkOrderScalarWhereInput!]
   OR: [WorkOrderScalarWhereInput!]
   NOT: [WorkOrderScalarWhereInput!]
+}
+
+enum WorkOrderStatus {
+  PENDING
+  IN_PROGRESS
+  HALF_DONE
+  COMPLETE
 }
 
 type WorkOrderSubscriptionPayload {
@@ -987,14 +1071,17 @@ input WorkOrderUpdateInput {
   WorkBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
   worker: UserUpdateOneInput
   client: ClientUpdateOneRequiredWithoutWorkOrdersInput
+  status: WorkOrderStatus
 }
 
 input WorkOrderUpdateManyDataInput {
   item: String
+  status: WorkOrderStatus
 }
 
 input WorkOrderUpdateManyMutationInput {
   item: String
+  status: WorkOrderStatus
 }
 
 input WorkOrderUpdateManyWithoutClientInput {
@@ -1038,6 +1125,7 @@ input WorkOrderUpdateWithoutClientDataInput {
   workTypes: WorkTypeUpdateManyWithoutWorkOrdersInput
   WorkBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
   worker: UserUpdateOneInput
+  status: WorkOrderStatus
 }
 
 input WorkOrderUpdateWithoutWorkBreakdownsDataInput {
@@ -1045,6 +1133,7 @@ input WorkOrderUpdateWithoutWorkBreakdownsDataInput {
   workTypes: WorkTypeUpdateManyWithoutWorkOrdersInput
   worker: UserUpdateOneInput
   client: ClientUpdateOneRequiredWithoutWorkOrdersInput
+  status: WorkOrderStatus
 }
 
 input WorkOrderUpdateWithoutWorkTypesDataInput {
@@ -1052,6 +1141,7 @@ input WorkOrderUpdateWithoutWorkTypesDataInput {
   WorkBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
   worker: UserUpdateOneInput
   client: ClientUpdateOneRequiredWithoutWorkOrdersInput
+  status: WorkOrderStatus
 }
 
 input WorkOrderUpdateWithWhereUniqueWithoutClientInput {
@@ -1118,6 +1208,10 @@ input WorkOrderWhereInput {
   WorkBreakdowns_none: WorkBreakdownWhereInput
   worker: UserWhereInput
   client: ClientWhereInput
+  status: WorkOrderStatus
+  status_not: WorkOrderStatus
+  status_in: [WorkOrderStatus!]
+  status_not_in: [WorkOrderStatus!]
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

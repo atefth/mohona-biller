@@ -1,0 +1,35 @@
+type WorkOrder {
+  id: ID!
+  item: String!
+  workTypes: [WorkType]!
+  worker: User
+  client: Client!
+  status: WorkOrderStatus!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum WorkOrderStatus {
+  PENDING
+  IN_PROGRESS
+  HALF_DONE
+  COMPLETE
+}
+
+input WorkOrderInput {
+  item: String!
+  workTypeIds: [ID!]!
+  workerId: ID
+  clientId: ID!
+}
+
+type Query {
+  getWorkOrders: [WorkOrder!]!
+  getWorkOrderById: WorkOrder
+}
+
+type Mutation {
+  createWorkOrder(input: WorkOrderInput): WorkOrder!
+  updateWorkOrder(id: ID!, input: WorkOrderInput): WorkOrder!
+  deleteWorkOrder(id: ID!): WorkOrder!
+}

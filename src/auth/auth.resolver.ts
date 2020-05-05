@@ -9,10 +9,9 @@ import {
 } from '../shared/decorators/decorators';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
-import { SignUpInputDto } from './sign-up-input.dto';
+import { SignUpInputDto } from './dto/sign-up-input.dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from './gql-auth.guard';
-import { parseConfigFileTextToJson } from 'typescript';
 
 @Resolver('Auth')
 export class AuthResolver {

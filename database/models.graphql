@@ -15,11 +15,6 @@ enum Role {
   ADMIN
 }
 
-# type Role @db(name: "roles") {
-#   id: ID! @id
-#   name: String! @unique
-# }
-
 type Client @db(name: "clients") {
   id: ID! @id
   name: String! @unique
@@ -48,11 +43,19 @@ type WorkOrder @db(name: "work_orders") {
     @relation(name: "WorkOrderToWorkBreakdowns", onDelete: CASCADE)
   worker: User
   client: Client!
+  status: WorkOrderStatus! @default(value: PENDING)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
-type WorkBreakdown @db(name: "work_breakdown") {
+enum WorkOrderStatus {
+  PENDING
+  IN_PROGRESS
+  HALF_DONE
+  COMPLETE
+}
+
+type WorkBreakdown @db(name: "work_breakdowns") {
   id: ID! @id
   workOrder: WorkOrder!
     @relation(name: "WorkOrderToWorkBreakdowns", onDelete: SET_NULL)
@@ -61,4 +64,14 @@ type WorkBreakdown @db(name: "work_breakdown") {
   quantity: Int
   side: Int
   rate: Float
+  status: WorkBreakdownStatus! @default(value: PENDING)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+enum WorkBreakdownStatus {
+  PENDING
+  IN_PROGRESS
+  HALF_DONE
+  COMPLETE
 }

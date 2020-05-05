@@ -1,0 +1,24 @@
+type Client {
+  id: ID!
+  name: String!
+  contact: String
+  workOrders: [WorkOrder]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input ClientInput {
+  name: String!
+  contact: String
+}
+
+type Query {
+  getClients: [Client!]!
+  getClientById: Client
+}
+
+type Mutation {
+  createClient(input: ClientInput): Client!
+  updateClient(id: ID!, input: ClientInput): Client!
+  deleteClient(id: ID!): Client!
+}

@@ -1,0 +1,24 @@
+type WorkType {
+  id: ID!
+  name: String!
+  rate: Float!
+  workOrders: [WorkOrder]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input WorkTypeInput {
+  name: String!
+  rate: Float!
+}
+
+type Query {
+  getWorkTypes: [WorkType!]!
+  getWorkTypeById: WorkType
+}
+
+type Mutation {
+  createWorkType(input: WorkTypeInput): WorkType!
+  updateWorkType(id: ID!, input: WorkTypeInput): WorkType!
+  deleteWorkType(id: ID!): WorkType!
+}
