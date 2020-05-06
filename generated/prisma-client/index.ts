@@ -310,6 +310,8 @@ export type WorkBreakdownOrderByInput =
   | "sideB_DESC"
   | "quantity_ASC"
   | "quantity_DESC"
+  | "ups_ASC"
+  | "ups_DESC"
   | "side_ASC"
   | "side_DESC"
   | "rate_ASC"
@@ -392,9 +394,9 @@ export interface WorkOrderWhereInput {
   workTypes_every?: Maybe<WorkTypeWhereInput>;
   workTypes_some?: Maybe<WorkTypeWhereInput>;
   workTypes_none?: Maybe<WorkTypeWhereInput>;
-  WorkBreakdowns_every?: Maybe<WorkBreakdownWhereInput>;
-  WorkBreakdowns_some?: Maybe<WorkBreakdownWhereInput>;
-  WorkBreakdowns_none?: Maybe<WorkBreakdownWhereInput>;
+  workBreakdowns_every?: Maybe<WorkBreakdownWhereInput>;
+  workBreakdowns_some?: Maybe<WorkBreakdownWhereInput>;
+  workBreakdowns_none?: Maybe<WorkBreakdownWhereInput>;
   worker?: Maybe<UserWhereInput>;
   client?: Maybe<ClientWhereInput>;
   status?: Maybe<WorkOrderStatus>;
@@ -535,6 +537,14 @@ export interface WorkBreakdownWhereInput {
   quantity_lte?: Maybe<Int>;
   quantity_gt?: Maybe<Int>;
   quantity_gte?: Maybe<Int>;
+  ups?: Maybe<Int>;
+  ups_not?: Maybe<Int>;
+  ups_in?: Maybe<Int[] | Int>;
+  ups_not_in?: Maybe<Int[] | Int>;
+  ups_lt?: Maybe<Int>;
+  ups_lte?: Maybe<Int>;
+  ups_gt?: Maybe<Int>;
+  ups_gte?: Maybe<Int>;
   side?: Maybe<Int>;
   side_not?: Maybe<Int>;
   side_in?: Maybe<Int[] | Int>;
@@ -783,7 +793,7 @@ export interface WorkOrderCreateWithoutClientInput {
   id?: Maybe<ID_Input>;
   item: String;
   workTypes?: Maybe<WorkTypeCreateManyWithoutWorkOrdersInput>;
-  WorkBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
+  workBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserCreateOneInput>;
   status?: Maybe<WorkOrderStatus>;
 }
@@ -817,6 +827,7 @@ export interface WorkBreakdownCreateWithoutWorkOrderInput {
   sideA?: Maybe<String>;
   sideB?: Maybe<String>;
   quantity?: Maybe<Int>;
+  ups?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
   status?: Maybe<WorkBreakdownStatus>;
@@ -874,7 +885,7 @@ export interface WorkOrderUpdateWithWhereUniqueWithoutClientInput {
 export interface WorkOrderUpdateWithoutClientDataInput {
   item?: Maybe<String>;
   workTypes?: Maybe<WorkTypeUpdateManyWithoutWorkOrdersInput>;
-  WorkBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
+  workBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserUpdateOneInput>;
   status?: Maybe<WorkOrderStatus>;
 }
@@ -1028,6 +1039,7 @@ export interface WorkBreakdownUpdateWithoutWorkOrderDataInput {
   sideA?: Maybe<String>;
   sideB?: Maybe<String>;
   quantity?: Maybe<Int>;
+  ups?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
   status?: Maybe<WorkBreakdownStatus>;
@@ -1090,6 +1102,14 @@ export interface WorkBreakdownScalarWhereInput {
   quantity_lte?: Maybe<Int>;
   quantity_gt?: Maybe<Int>;
   quantity_gte?: Maybe<Int>;
+  ups?: Maybe<Int>;
+  ups_not?: Maybe<Int>;
+  ups_in?: Maybe<Int[] | Int>;
+  ups_not_in?: Maybe<Int[] | Int>;
+  ups_lt?: Maybe<Int>;
+  ups_lte?: Maybe<Int>;
+  ups_gt?: Maybe<Int>;
+  ups_gte?: Maybe<Int>;
   side?: Maybe<Int>;
   side_not?: Maybe<Int>;
   side_in?: Maybe<Int[] | Int>;
@@ -1140,6 +1160,7 @@ export interface WorkBreakdownUpdateManyDataInput {
   sideA?: Maybe<String>;
   sideB?: Maybe<String>;
   quantity?: Maybe<Int>;
+  ups?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
   status?: Maybe<WorkBreakdownStatus>;
@@ -1267,6 +1288,7 @@ export interface WorkBreakdownCreateInput {
   sideA?: Maybe<String>;
   sideB?: Maybe<String>;
   quantity?: Maybe<Int>;
+  ups?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
   status?: Maybe<WorkBreakdownStatus>;
@@ -1302,6 +1324,7 @@ export interface WorkBreakdownUpdateInput {
   sideA?: Maybe<String>;
   sideB?: Maybe<String>;
   quantity?: Maybe<Int>;
+  ups?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
   status?: Maybe<WorkBreakdownStatus>;
@@ -1348,6 +1371,7 @@ export interface WorkBreakdownUpdateManyMutationInput {
   sideA?: Maybe<String>;
   sideB?: Maybe<String>;
   quantity?: Maybe<Int>;
+  ups?: Maybe<Int>;
   side?: Maybe<Int>;
   rate?: Maybe<Float>;
   status?: Maybe<WorkBreakdownStatus>;
@@ -1357,7 +1381,7 @@ export interface WorkOrderCreateInput {
   id?: Maybe<ID_Input>;
   item: String;
   workTypes?: Maybe<WorkTypeCreateManyWithoutWorkOrdersInput>;
-  WorkBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
+  workBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserCreateOneInput>;
   client: ClientCreateOneWithoutWorkOrdersInput;
   status?: Maybe<WorkOrderStatus>;
@@ -1366,7 +1390,7 @@ export interface WorkOrderCreateInput {
 export interface WorkOrderUpdateInput {
   item?: Maybe<String>;
   workTypes?: Maybe<WorkTypeUpdateManyWithoutWorkOrdersInput>;
-  WorkBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
+  workBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserUpdateOneInput>;
   client?: Maybe<ClientUpdateOneRequiredWithoutWorkOrdersInput>;
   status?: Maybe<WorkOrderStatus>;
@@ -1395,7 +1419,7 @@ export interface WorkOrderCreateManyWithoutWorkTypesInput {
 export interface WorkOrderCreateWithoutWorkTypesInput {
   id?: Maybe<ID_Input>;
   item: String;
-  WorkBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
+  workBreakdowns?: Maybe<WorkBreakdownCreateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserCreateOneInput>;
   client: ClientCreateOneWithoutWorkOrdersInput;
   status?: Maybe<WorkOrderStatus>;
@@ -1438,7 +1462,7 @@ export interface WorkOrderUpdateWithWhereUniqueWithoutWorkTypesInput {
 
 export interface WorkOrderUpdateWithoutWorkTypesDataInput {
   item?: Maybe<String>;
-  WorkBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
+  workBreakdowns?: Maybe<WorkBreakdownUpdateManyWithoutWorkOrderInput>;
   worker?: Maybe<UserUpdateOneInput>;
   client?: Maybe<ClientUpdateOneRequiredWithoutWorkOrdersInput>;
   status?: Maybe<WorkOrderStatus>;
@@ -1613,7 +1637,7 @@ export interface WorkOrderPromise extends Promise<WorkOrder>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  WorkBreakdowns: <T = FragmentableArray<WorkBreakdown>>(args?: {
+  workBreakdowns: <T = FragmentableArray<WorkBreakdown>>(args?: {
     where?: WorkBreakdownWhereInput;
     orderBy?: WorkBreakdownOrderByInput;
     skip?: Int;
@@ -1643,7 +1667,7 @@ export interface WorkOrderSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  WorkBreakdowns: <
+  workBreakdowns: <
     T = Promise<AsyncIterator<WorkBreakdownSubscription>>
   >(args?: {
     where?: WorkBreakdownWhereInput;
@@ -1675,7 +1699,7 @@ export interface WorkOrderNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  WorkBreakdowns: <T = FragmentableArray<WorkBreakdown>>(args?: {
+  workBreakdowns: <T = FragmentableArray<WorkBreakdown>>(args?: {
     where?: WorkBreakdownWhereInput;
     orderBy?: WorkBreakdownOrderByInput;
     skip?: Int;
@@ -1759,6 +1783,7 @@ export interface WorkBreakdown {
   sideA?: String;
   sideB?: String;
   quantity?: Int;
+  ups?: Int;
   side?: Int;
   rate?: Float;
   status: WorkBreakdownStatus;
@@ -1774,6 +1799,7 @@ export interface WorkBreakdownPromise
   sideA: () => Promise<String>;
   sideB: () => Promise<String>;
   quantity: () => Promise<Int>;
+  ups: () => Promise<Int>;
   side: () => Promise<Int>;
   rate: () => Promise<Float>;
   status: () => Promise<WorkBreakdownStatus>;
@@ -1789,6 +1815,7 @@ export interface WorkBreakdownSubscription
   sideA: () => Promise<AsyncIterator<String>>;
   sideB: () => Promise<AsyncIterator<String>>;
   quantity: () => Promise<AsyncIterator<Int>>;
+  ups: () => Promise<AsyncIterator<Int>>;
   side: () => Promise<AsyncIterator<Int>>;
   rate: () => Promise<AsyncIterator<Float>>;
   status: () => Promise<AsyncIterator<WorkBreakdownStatus>>;
@@ -1804,6 +1831,7 @@ export interface WorkBreakdownNullablePromise
   sideA: () => Promise<String>;
   sideB: () => Promise<String>;
   quantity: () => Promise<Int>;
+  ups: () => Promise<Int>;
   side: () => Promise<Int>;
   rate: () => Promise<Float>;
   status: () => Promise<WorkBreakdownStatus>;
@@ -2326,6 +2354,7 @@ export interface WorkBreakdownPreviousValues {
   sideA?: String;
   sideB?: String;
   quantity?: Int;
+  ups?: Int;
   side?: Int;
   rate?: Float;
   status: WorkBreakdownStatus;
@@ -2340,6 +2369,7 @@ export interface WorkBreakdownPreviousValuesPromise
   sideA: () => Promise<String>;
   sideB: () => Promise<String>;
   quantity: () => Promise<Int>;
+  ups: () => Promise<Int>;
   side: () => Promise<Int>;
   rate: () => Promise<Float>;
   status: () => Promise<WorkBreakdownStatus>;
@@ -2354,6 +2384,7 @@ export interface WorkBreakdownPreviousValuesSubscription
   sideA: () => Promise<AsyncIterator<String>>;
   sideB: () => Promise<AsyncIterator<String>>;
   quantity: () => Promise<AsyncIterator<Int>>;
+  ups: () => Promise<AsyncIterator<Int>>;
   side: () => Promise<AsyncIterator<Int>>;
   rate: () => Promise<AsyncIterator<Float>>;
   status: () => Promise<AsyncIterator<WorkBreakdownStatus>>;

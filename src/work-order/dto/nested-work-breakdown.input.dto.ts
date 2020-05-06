@@ -1,9 +1,8 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
-import { WorkBreakdownInput } from 'src/graphql.schema.generated';
+import { NestedWorkBreakdownInput } from 'src/graphql.schema.generated';
 
-export class WorkBreakdownInputDto extends WorkBreakdownInput {
-  @IsNotEmpty()
-  readonly workOrderId: string;
+export class NestedWorkBreakdownInputDto extends NestedWorkBreakdownInput {
+  readonly id: string;
 
   readonly sideA: string;
   readonly sideB: string;

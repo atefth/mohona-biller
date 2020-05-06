@@ -39,7 +39,7 @@ type WorkOrder @db(name: "work_orders") {
   item: String!
   workTypes: [WorkType]!
     @relation(name: "WorkTypeToWorkOrders", onDelete: SET_NULL)
-  WorkBreakdowns: [WorkBreakdown]!
+  workBreakdowns: [WorkBreakdown!]!
     @relation(name: "WorkOrderToWorkBreakdowns", onDelete: CASCADE)
   worker: User
   client: Client!
@@ -62,7 +62,8 @@ type WorkBreakdown @db(name: "work_breakdowns") {
   sideA: String
   sideB: String
   quantity: Int
-  side: Int
+  ups: Int
+  side: Int @default(value: 1)
   rate: Float
   status: WorkBreakdownStatus! @default(value: PENDING)
   createdAt: DateTime! @createdAt

@@ -35,6 +35,16 @@ export class LoginInput {
     password: string;
 }
 
+export class NestedWorkBreakdownInput {
+    id?: string;
+    sideA?: string;
+    sideB?: string;
+    quantity?: number;
+    ups?: number;
+    side?: number;
+    rate?: number;
+}
+
 export class SignUpInput {
     firstName: string;
     lastName?: string;
@@ -54,6 +64,7 @@ export class WorkBreakdownInput {
     sideA?: string;
     sideB?: string;
     quantity?: number;
+    ups?: number;
     side?: number;
     rate?: number;
 }
@@ -61,6 +72,7 @@ export class WorkBreakdownInput {
 export class WorkOrderInput {
     item: string;
     workTypeIds: string[];
+    workBreakdowns?: NestedWorkBreakdownInput[];
     workerId?: string;
     clientId: string;
 }
@@ -158,6 +170,7 @@ export class WorkBreakdown {
     sideA?: string;
     sideB?: string;
     quantity?: number;
+    ups?: number;
     side?: number;
     rate?: number;
     status: WorkBreakdownStatus;
@@ -169,6 +182,7 @@ export class WorkOrder {
     workTypes: WorkType[];
     worker?: User;
     client: Client;
+    workBreakdowns: WorkBreakdown[];
     status: WorkOrderStatus;
     createdAt: string;
     updatedAt: string;

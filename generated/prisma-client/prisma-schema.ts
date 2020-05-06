@@ -534,6 +534,7 @@ type WorkBreakdown {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus!
@@ -553,6 +554,7 @@ input WorkBreakdownCreateInput {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus
@@ -568,6 +570,7 @@ input WorkBreakdownCreateWithoutWorkOrderInput {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus
@@ -587,6 +590,8 @@ enum WorkBreakdownOrderByInput {
   sideB_DESC
   quantity_ASC
   quantity_DESC
+  ups_ASC
+  ups_DESC
   side_ASC
   side_DESC
   rate_ASC
@@ -604,6 +609,7 @@ type WorkBreakdownPreviousValues {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus!
@@ -662,6 +668,14 @@ input WorkBreakdownScalarWhereInput {
   quantity_lte: Int
   quantity_gt: Int
   quantity_gte: Int
+  ups: Int
+  ups_not: Int
+  ups_in: [Int!]
+  ups_not_in: [Int!]
+  ups_lt: Int
+  ups_lte: Int
+  ups_gt: Int
+  ups_gte: Int
   side: Int
   side_not: Int
   side_in: [Int!]
@@ -733,6 +747,7 @@ input WorkBreakdownUpdateInput {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus
@@ -742,6 +757,7 @@ input WorkBreakdownUpdateManyDataInput {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus
@@ -751,6 +767,7 @@ input WorkBreakdownUpdateManyMutationInput {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus
@@ -777,6 +794,7 @@ input WorkBreakdownUpdateWithoutWorkOrderDataInput {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus
@@ -845,6 +863,14 @@ input WorkBreakdownWhereInput {
   quantity_lte: Int
   quantity_gt: Int
   quantity_gte: Int
+  ups: Int
+  ups_not: Int
+  ups_in: [Int!]
+  ups_not_in: [Int!]
+  ups_lt: Int
+  ups_lte: Int
+  ups_gt: Int
+  ups_gte: Int
   side: Int
   side_not: Int
   side_in: [Int!]
@@ -894,7 +920,7 @@ type WorkOrder {
   id: ID!
   item: String!
   workTypes(where: WorkTypeWhereInput, orderBy: WorkTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkType!]
-  WorkBreakdowns(where: WorkBreakdownWhereInput, orderBy: WorkBreakdownOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkBreakdown!]
+  workBreakdowns(where: WorkBreakdownWhereInput, orderBy: WorkBreakdownOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkBreakdown!]
   worker: User
   client: Client!
   status: WorkOrderStatus!
@@ -912,7 +938,7 @@ input WorkOrderCreateInput {
   id: ID
   item: String!
   workTypes: WorkTypeCreateManyWithoutWorkOrdersInput
-  WorkBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
+  workBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
   worker: UserCreateOneInput
   client: ClientCreateOneWithoutWorkOrdersInput!
   status: WorkOrderStatus
@@ -937,7 +963,7 @@ input WorkOrderCreateWithoutClientInput {
   id: ID
   item: String!
   workTypes: WorkTypeCreateManyWithoutWorkOrdersInput
-  WorkBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
+  workBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
   worker: UserCreateOneInput
   status: WorkOrderStatus
 }
@@ -954,7 +980,7 @@ input WorkOrderCreateWithoutWorkBreakdownsInput {
 input WorkOrderCreateWithoutWorkTypesInput {
   id: ID
   item: String!
-  WorkBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
+  workBreakdowns: WorkBreakdownCreateManyWithoutWorkOrderInput
   worker: UserCreateOneInput
   client: ClientCreateOneWithoutWorkOrdersInput!
   status: WorkOrderStatus
@@ -1068,7 +1094,7 @@ input WorkOrderSubscriptionWhereInput {
 input WorkOrderUpdateInput {
   item: String
   workTypes: WorkTypeUpdateManyWithoutWorkOrdersInput
-  WorkBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
+  workBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
   worker: UserUpdateOneInput
   client: ClientUpdateOneRequiredWithoutWorkOrdersInput
   status: WorkOrderStatus
@@ -1123,7 +1149,7 @@ input WorkOrderUpdateOneRequiredWithoutWorkBreakdownsInput {
 input WorkOrderUpdateWithoutClientDataInput {
   item: String
   workTypes: WorkTypeUpdateManyWithoutWorkOrdersInput
-  WorkBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
+  workBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
   worker: UserUpdateOneInput
   status: WorkOrderStatus
 }
@@ -1138,7 +1164,7 @@ input WorkOrderUpdateWithoutWorkBreakdownsDataInput {
 
 input WorkOrderUpdateWithoutWorkTypesDataInput {
   item: String
-  WorkBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
+  workBreakdowns: WorkBreakdownUpdateManyWithoutWorkOrderInput
   worker: UserUpdateOneInput
   client: ClientUpdateOneRequiredWithoutWorkOrdersInput
   status: WorkOrderStatus
@@ -1203,9 +1229,9 @@ input WorkOrderWhereInput {
   workTypes_every: WorkTypeWhereInput
   workTypes_some: WorkTypeWhereInput
   workTypes_none: WorkTypeWhereInput
-  WorkBreakdowns_every: WorkBreakdownWhereInput
-  WorkBreakdowns_some: WorkBreakdownWhereInput
-  WorkBreakdowns_none: WorkBreakdownWhereInput
+  workBreakdowns_every: WorkBreakdownWhereInput
+  workBreakdowns_some: WorkBreakdownWhereInput
+  workBreakdowns_none: WorkBreakdownWhereInput
   worker: UserWhereInput
   client: ClientWhereInput
   status: WorkOrderStatus

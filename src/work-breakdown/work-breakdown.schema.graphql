@@ -4,6 +4,7 @@ type WorkBreakdown {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
   status: WorkBreakdownStatus!
@@ -21,6 +22,7 @@ input WorkBreakdownInput {
   sideA: String
   sideB: String
   quantity: Int
+  ups: Int
   side: Int
   rate: Float
 }

@@ -4,6 +4,7 @@ type WorkOrder {
   workTypes: [WorkType]!
   worker: User
   client: Client!
+  workBreakdowns: [WorkBreakdown!]!
   status: WorkOrderStatus!
   createdAt: String!
   updatedAt: String!
@@ -19,8 +20,19 @@ enum WorkOrderStatus {
 input WorkOrderInput {
   item: String!
   workTypeIds: [ID!]!
+  workBreakdowns: [NestedWorkBreakdownInput]
   workerId: ID
   clientId: ID!
+}
+
+input NestedWorkBreakdownInput {
+  id: ID
+  sideA: String
+  sideB: String
+  quantity: Int
+  ups: Int
+  side: Int
+  rate: Float
 }
 
 type Query {

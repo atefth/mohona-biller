@@ -34,7 +34,7 @@ export class WorkOrderResolver {
     @Args('input') input: WorkOrderInputDto,
     @Args('id') id: string,
   ) {
-    const query = this.workOrderParams(input);
+    const query = this.workOrderParams(input, 'UPDATE');
     return await this.prisma.client.updateWorkOrder({
       data: query,
       where: { id },
@@ -47,8 +47,9 @@ export class WorkOrderResolver {
     return await this.prisma.client.deleteWorkOrder({ id });
   }
 
-  private workOrderParams(input: WorkOrderInputDto) {
-    const { item, clientId, workerId, workTypeIds } = input;
+  private workOrderParams(input: WorkOrderInputDto, action: string = 'CREATE') {
+    const { item, clientId, workerId, workTypeIds, workBreakdowns } = input;
+
     let query = {
       item,
       client: {
@@ -64,6 +65,27 @@ export class WorkOrderResolver {
       query['worker'] = {
         connect: { id: workerId },
       };
+    }
+    if (action === 'CREATE') {
+      if (workBreakdowns) {
+        query['workBreakdowns'] = {
+          create: workBreakdowns.map(workBreakdown => {
+            return { ...workBreakdown };
+          }),
+        };
+      } else {
+        query['workBreakdowns'] = {
+          create: [{}],
+        };
+      }
+    } else if (action === 'UPDATE') {
+      if (workBreakdowns) {
+        query['workBreakdowns'] = {
+          update: workBreakdowns.map(({ id, ...rest }) => {
+            return { where: { id }, data: rest };
+          }),
+        };
+      }
     }
     return query;
   }
